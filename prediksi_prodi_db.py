@@ -31,6 +31,11 @@ def init_db():
         prediksi_fakultas TEXT)""")
 
 
+def simpan_nilai(nama, biologi, fisika, inggris, prediksi):
+    run_query("INSERT INTO nilai_siswa (nama_siswa, biologi, fisika, inggris, prediksi_fakultas) "
+              "VALUES (?, ?, ?, ?, ?)", (nama, biologi, fisika, inggris, prediksi))
+
+
 # nilai paling tinggi yg nentuin fakultasnya
 def prediksi_fakultas(biologi, fisika, inggris):
     if biologi >= fisika and biologi >= inggris:
@@ -53,7 +58,12 @@ def submit_nilai():
     ing = int(entry_inggris.get())
 
     hasil = prediksi_fakultas(bio, fis, ing)
+    simpan_nilai(nama, bio, fis, ing, hasil)  # masuk ke database
     hasil_var.set(f"Prediksi fakultas {nama}: {hasil}")
+
+    # kosongin lagi isiannya
+    for e in (entry_nama, entry_biologi, entry_fisika, entry_inggris):
+        e.delete(0, tk.END)
 
 
 init_db()
