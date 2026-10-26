@@ -5,7 +5,7 @@
 import os
 import sqlite3
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import ttk, messagebox
 
 
 # database nya disimpan di folder yg sama kayak file ini
@@ -35,6 +35,10 @@ def init_db():
 def simpan_nilai(nama, biologi, fisika, inggris, prediksi):
     run_query("INSERT INTO nilai_siswa (nama_siswa, biologi, fisika, inggris, prediksi_fakultas) "
               "VALUES (?, ?, ?, ?, ?)", (nama, biologi, fisika, inggris, prediksi))
+
+
+def ambil_semua_nilai():
+    return run_query("SELECT * FROM nilai_siswa")
 
 
 # nilai paling tinggi yg nentuin fakultasnya
@@ -75,6 +79,14 @@ def submit_nilai():
     # kosongin lagi isiannya
     for e in (entry_nama, entry_biologi, entry_fisika, entry_inggris):
         e.delete(0, tk.END)
+    tampilkan_data()
+
+
+# hapus isi tabel dulu terus isi lagi dari database
+def tampilkan_data():
+    tabel.delete(*tabel.get_children())
+    for baris in ambil_semua_nilai():
+        tabel.insert("", tk.END, values=baris)
 
 
 init_db()
@@ -115,4 +127,13 @@ tk.Label(root, textvariable=hasil_var, font=("Segoe UI", 12, "bold"),
          fg=WARNA_HASIL, bg="white", relief=tk.GROOVE, padx=10, pady=10
          ).grid(row=3, column=0, sticky="ew")
 
+# tabel buat liat data yg udah kesimpen
+kolom = ("id", "nama_siswa", "biologi", "fisika", "inggris", "prediksi_fakultas")
+tabel = ttk.Treeview(root, columns=kolom, show="headings", height=6)
+for k in kolom:
+    tabel.heading(k, text=k)
+    tabel.column(k, width=95, anchor="center")
+tabel.grid(row=4, column=0, pady=(15, 0))
+
+tampilkan_data()
 root.mainloop()
