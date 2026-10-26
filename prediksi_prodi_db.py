@@ -5,6 +5,7 @@
 import os
 import sqlite3
 import tkinter as tk
+from tkinter import messagebox
 
 
 # database nya disimpan di folder yg sama kayak file ini
@@ -52,11 +53,21 @@ WARNA_HASIL = "#0B7A3E"
 
 
 def submit_nilai():
-    nama = entry_nama.get()
-    bio = int(entry_biologi.get())
-    fis = int(entry_fisika.get())
-    ing = int(entry_inggris.get())
+    nama = entry_nama.get().strip()
+    bio = entry_biologi.get().strip()
+    fis = entry_fisika.get().strip()
+    ing = entry_inggris.get().strip()
 
+    # cek dulu ada yg kosong ga
+    if not nama or not bio or not fis or not ing:
+        messagebox.showwarning("Data kurang", "Semua kolom harus diisi.")
+        return
+    # nilai harus angka
+    if not (bio.isdigit() and fis.isdigit() and ing.isdigit()):
+        messagebox.showwarning("Nilai salah", "Nilai harus berupa angka.")
+        return
+
+    bio, fis, ing = int(bio), int(fis), int(ing)
     hasil = prediksi_fakultas(bio, fis, ing)
     simpan_nilai(nama, bio, fis, ing, hasil)  # masuk ke database
     hasil_var.set(f"Prediksi fakultas {nama}: {hasil}")
