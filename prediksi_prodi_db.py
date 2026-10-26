@@ -5,6 +5,16 @@
 import tkinter as tk
 
 
+# nilai paling tinggi yg nentuin fakultasnya
+def prediksi_fakultas(biologi, fisika, inggris):
+    if biologi >= fisika and biologi >= inggris:
+        return "Kedokteran"
+    elif fisika >= biologi and fisika >= inggris:
+        return "Teknik"
+    else:
+        return "Bahasa"
+
+
 WARNA_BG = "#F4F6FB"
 WARNA_HEADER = "#1F3A93"
 WARNA_HASIL = "#0B7A3E"
@@ -12,7 +22,12 @@ WARNA_HASIL = "#0B7A3E"
 
 def submit_nilai():
     nama = entry_nama.get()
-    hasil_var.set(f"Data {nama} sudah diisi")
+    bio = int(entry_biologi.get())
+    fis = int(entry_fisika.get())
+    ing = int(entry_inggris.get())
+
+    hasil = prediksi_fakultas(bio, fis, ing)
+    hasil_var.set(f"Prediksi fakultas {nama}: {hasil}")
 
 
 root = tk.Tk()
