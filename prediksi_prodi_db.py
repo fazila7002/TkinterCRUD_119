@@ -20,6 +20,17 @@ def run_query(sql, params=()):
         conn.close()
 
 
+# bikin tabel kalau belum ada
+def init_db():
+    run_query("""CREATE TABLE IF NOT EXISTS nilai_siswa (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nama_siswa TEXT NOT NULL,
+        biologi INTEGER,
+        fisika INTEGER,
+        inggris INTEGER,
+        prediksi_fakultas TEXT)""")
+
+
 # nilai paling tinggi yg nentuin fakultasnya
 def prediksi_fakultas(biologi, fisika, inggris):
     if biologi >= fisika and biologi >= inggris:
@@ -44,6 +55,8 @@ def submit_nilai():
     hasil = prediksi_fakultas(bio, fis, ing)
     hasil_var.set(f"Prediksi fakultas {nama}: {hasil}")
 
+
+init_db()
 
 root = tk.Tk()
 root.title("Aplikasi Prediksi Prodi Pilihan")
