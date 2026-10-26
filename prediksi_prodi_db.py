@@ -10,6 +10,11 @@ WARNA_HEADER = "#1F3A93"
 WARNA_HASIL = "#0B7A3E"
 
 
+def submit_nilai():
+    nama = entry_nama.get()
+    hasil_var.set(f"Data {nama} sudah diisi")
+
+
 root = tk.Tk()
 root.title("Aplikasi Prediksi Prodi Pilihan")
 root.configure(bg=WARNA_BG, padx=20, pady=20)
@@ -34,5 +39,16 @@ for i, teks in enumerate(labels):
     e.grid(row=i, column=1, pady=5)
     entries.append(e)
 entry_nama, entry_biologi, entry_fisika, entry_inggris = entries
+
+tombol = tk.Button(root, text="Submit Nilai", command=submit_nilai,
+                   font=("Segoe UI", 11, "bold"), bg=WARNA_HEADER, fg="white",
+                   activebackground="#2C4FBF", activeforeground="white",
+                   padx=20, pady=5, cursor="hand2")
+tombol.grid(row=2, column=0, pady=15)
+
+hasil_var = tk.StringVar(value="Hasil prediksi akan tampil di sini")
+tk.Label(root, textvariable=hasil_var, font=("Segoe UI", 12, "bold"),
+         fg=WARNA_HASIL, bg="white", relief=tk.GROOVE, padx=10, pady=10
+         ).grid(row=3, column=0, sticky="ew")
 
 root.mainloop()
