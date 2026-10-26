@@ -2,7 +2,22 @@
 # NIM   : 20250140119
 # Kelas : C
 
+import os
+import sqlite3
 import tkinter as tk
+
+
+# database nya disimpan di folder yg sama kayak file ini
+DB_NAME = os.path.join(os.path.dirname(os.path.abspath(__file__)), "nilai_siswa.db")
+
+
+def run_query(sql, params=()):
+    conn = sqlite3.connect(DB_NAME)
+    try:
+        with conn:  # otomatis commit
+            return conn.execute(sql, params).fetchall()
+    finally:
+        conn.close()
 
 
 # nilai paling tinggi yg nentuin fakultasnya
